@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  email: MyString
+  name: MyString
+  hours_pledged: 1.5
+  phone_number: MyString
+  zipcode: MyString
+  twitter_handle: MyString
+  enable_text_checkins: false
+  enable_start_conversations: false
+  resume_link: MyString
+
+two:
+  email: MyString
+  name: MyString
+  hours_pledged: 1.5
+  phone_number: MyString
+  zipcode: MyString
+  twitter_handle: MyString
+  enable_text_checkins: false
+  enable_start_conversations: false
+  resume_link: MyString

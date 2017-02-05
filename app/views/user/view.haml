@@ -1,0 +1,13 @@
+#id
+  = @user.id
+  = @user.to_json
+
+#skills
+  Skills
+  - @user.skills.each do |skill|
+    = skill.to_json
+
+#causes
+  Causes
+  - @user.causes.each do |cause|
+    = cause.to_json
