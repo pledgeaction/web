@@ -107,7 +107,7 @@ class ImportController < ApplicationController
         #What political actions have you taken in the last 12 months?
         answer["choices"]["labels"].each do |action_name|
           action = Action.find_by_name(action_name)
-          if skill.blank?
+          if action.blank?
             action = Action.create(:name => action_name)
           end
           @user.actions << action
