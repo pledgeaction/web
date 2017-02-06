@@ -11,7 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170205223825) do
+ActiveRecord::Schema.define(version: 20170206011540) do
+
+  create_table "actions", force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "causes", force: :cascade do |t|
     t.string   "name"
@@ -23,7 +30,7 @@ ActiveRecord::Schema.define(version: 20170205223825) do
   create_table "follows", force: :cascade do |t|
     t.integer  "from_user_id"
     t.string   "to"
-    t.string   "type"
+    t.string   "kind"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
@@ -31,7 +38,7 @@ ActiveRecord::Schema.define(version: 20170205223825) do
   create_table "peers", force: :cascade do |t|
     t.integer  "from_user_id"
     t.string   "to"
-    t.string   "type"
+    t.string   "kind"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
   end
@@ -41,6 +48,13 @@ ActiveRecord::Schema.define(version: 20170205223825) do
     t.string   "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "user_actions", force: :cascade do |t|
+    t.integer  "action_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_causes", force: :cascade do |t|
