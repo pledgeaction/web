@@ -82,7 +82,7 @@ class ImportController < ApplicationController
           if skill.blank?
             skill = Skill.create(:name => skill_name)
           end
-          @user.causes << skill
+          @user.skills << skill
         end
       when "42429683"
         #What cause are you most excited to help with?
@@ -110,7 +110,7 @@ class ImportController < ApplicationController
           if skill.blank?
             action = Action.create(:name => action_name)
           end
-          @user.causes << action
+          @user.actions << action
         end
       when "42437044"
         #Your primary online resume
@@ -119,7 +119,7 @@ class ImportController < ApplicationController
       end
     end
 
-      @user.save!
+    @user.save!
 
     head :ok
   end
