@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   has_many :follows, :foreign_key => "from_user_id"
   has_many :peers, :foreign_key => "from_user_id"
 
+  has_many :referrals, class_name: "User", foreign_key: "referring_user_id"
+
   # get 8 random hex characters for an obfuscated user URL
   def url_hash
     "#{id}salt".hash.abs.to_s(16)[0..7]
