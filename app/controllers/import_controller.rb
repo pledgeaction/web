@@ -93,18 +93,17 @@ class ImportController < ApplicationController
       when "42429683"
         #What cause are you most excited to help with?
         cause_name = answer["choice"]["label"]
-        if @user.causes.find_by_name(cause_name)
-          join = UserCause.find(:user_id => @user.id, :cause_id => @user.causes.find_by_name(cause_name).id)
-          join.primary = true
-          join.save
-        else
-          #TODO: add primary flag
+        if !@user.causes.find_by_name(cause_name)
           cause = Cause.find_by_name(cause_name)
           if cause.blank?
             cause = Cause.create(:name => cause_name)
           end
           @user.causes << cause
+          @user.save
         end
+        join = UserCause.find_by_user_and_name(@user, cause_name)
+        join.primary = true
+        join.save
       when "42437130"
         @user.phone_number = answer["text"]
       when "42437164"
