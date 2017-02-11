@@ -18,4 +18,9 @@ class User < ActiveRecord::Base
     "#{id}salt".hash.abs.to_s(16)[0..7]
   end
 
+  before_create :save_url
+  def save_url
+    self.url = url_hash
+  end
+
 end
