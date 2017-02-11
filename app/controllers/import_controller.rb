@@ -5,17 +5,19 @@ class ImportController < ApplicationController
 
   skip_before_action :verify_authenticity_token
   def typeform
-    puts params
-    puts params.to_json
-
-    @user = User.new
-    @user.signup_blob = params.to_json
-    @user.save!
 
     if !params["form_response"] || !params["form_response"]["answers"]
       head :bad_request
       return
     end
+
+    #TODO: params are not saving
+    @user = User.new
+    @user.signup_blob = params.to_json
+    @user.save!
+
+    #puts params
+    #puts params.to_json
 
     params["form_response"]["answers"].each do |answer|
       case answer["field"]["id"]
