@@ -35,9 +35,6 @@ class ImportController < ApplicationController
       when "42428682"
         #how many hours per week will you pledge towards taking effective political?
         @user.hours_pledged = answer["number"]
-      when "42437071"
-        #Is it cool if we occasionally check in on whether or not you are making good on your pledge over text?
-        @user.enable_text_checkins = answer["boolean"] 
       when "42432170"
         #Is it cool if we get some conversations started for you
         @user.enable_start_conversations = answer["boolean"] 
@@ -108,6 +105,7 @@ class ImportController < ApplicationController
         join.save
       when "42437130"
         @user.phone_number = answer["text"]
+        @user.enable_text_checkins = true
       when "42437164"
         @user.zipcode = answer["text"]
       when "42480555"
