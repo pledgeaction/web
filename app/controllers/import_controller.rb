@@ -12,7 +12,10 @@ class ImportController < ApplicationController
     @user.signup_blob = params.to_json
     @user.save!
 
-    head :bad_request unless params["form_response"] && params["form_response"]["answers"]
+    if !params["form_response"] || !params["form_response"]["answers"]
+      head :bad_request
+      return
+    end
 
     params["form_response"]["answers"].each do |answer|
       case answer["field"]["id"]
