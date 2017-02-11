@@ -23,4 +23,8 @@ class User < ActiveRecord::Base
     self.url = url_hash
   end
 
+  def referred_pledge_hours
+    referrals.map(&:hours_pledged).compact.reduce(:+) || 0
+  end
+
 end

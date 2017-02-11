@@ -1,13 +1,33 @@
-#id
-  = @user.id
-  = @user.to_json
+.panel.panel-default
+  .panel-heading Pledge
+  .panel-body
+    Pledged Hours:
+    = @user.hours_pledged.to_i
+  .panel-body
+    Referrals:
+    = @user.referrals.count
+  .panel-body
+    Pledged Referral Hours
+    = @user.referred_pledge_hours
 
-#skills
-  Skills
-  - @user.skills.each do |skill|
-    = skill.to_json
-
-#causes
-  Causes
+.panel.panel-default
+  .panel-heading Causes
   - @user.causes.each do |cause|
-    = cause.to_json
+    .panel-body
+      = cause.name
+
+.panel.panel-default
+  .panel-heading Actions
+  - @user.actions.each do |action|
+    .panel-body
+      = action.name
+
+.panel.panel-default
+  .panel-heading Skills
+  - @user.skills.each do |skill|
+    .panel-body
+      = skill.name
+
+#raw
+  Raw
+  = @user.to_json
