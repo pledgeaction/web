@@ -127,8 +127,8 @@ class ImportController < ApplicationController
       end
     end
 
-    if params["hidden"] && params["hidden"]["ref_user"]
-      @user.referrer = User.find_by_url(params["hidden"]["ref_user"])
+    if params["form_response"]["hidden"] && params["form_response"]["hidden"]["ref_user"]
+      @user.referrer = User.find_by_url(params["form_response"]["hidden"]["ref_user"])
     end
 
     @user.save!
