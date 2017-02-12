@@ -22,7 +22,8 @@ class ImportController < ApplicationController
     params["form_response"]["answers"].each do |answer|
       case answer["field"]["id"]
       when "42429695" #What causes are you interested in?
-        answer["choices"]["labels"].each do |cause_name|
+        cause_names = [answer["choices"]["labels"], answer["choices"]["other"]].compact.flatten
+        cause_names.each do |cause_name|
           cause = Cause.find_by_name(cause_name)
           if cause.blank?
             cause = Cause.create(:name => cause_name)
@@ -82,7 +83,8 @@ class ImportController < ApplicationController
         end
       when "42436932"
         #What are your skillz?
-        answer["choices"]["labels"].each do |skill_name|
+        skill_names = [answer["choices"]["labels"], answer["choices"]["other"]].compact.flatten
+        skill_names.each do |skill_name|
           skill = Skill.find_by_name(skill_name)
           if skill.blank?
             skill = Skill.create(:name => skill_name)
@@ -110,7 +112,8 @@ class ImportController < ApplicationController
         @user.zipcode = answer["text"]
       when "42480555"
         #What political actions have you taken in the last 12 months?
-        answer["choices"]["labels"].each do |action_name|
+        action_names = [answer["choices"]["labels"], answer["choices"]["other"]].compact.flatten
+        action_names.each do |action_name|
           action = Action.find_by_name(action_name)
           if action.blank?
             action = Action.create(:name => action_name)
@@ -122,6 +125,10 @@ class ImportController < ApplicationController
         @user.resume_link = answer["text"]
       else
       end
+    end
+
+    if params["hidden"] && params["hidden"]["ref_user"]
+      @user.referrer = User.find_by_url(params["hidden"]["ref_user"])
     end
 
     @user.save!
