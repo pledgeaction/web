@@ -1,10 +1,17 @@
 include SendGrid
 class PeerNotifier < ApplicationMailer
   def send_email_to_peers(user)
-    puts "send_peer_email"
-    mail( :to => 'alec.lee15@gmail.com',
-          :cc => ['alec.lee@justin.tv', 'alec.lee15@gmail.com'],
-          :subject => "hey peer!"
+    puts "send_email_to_peers"
+    if user.nil? || !user[:enable_start_conversations]
+        puts "nil user or user declined to start conversations"
+        return
+    end
+
+    peer_emails = user.peers.select{ |p| p[:kind] == 'email' }.map{ |p| p[:to] }
+
+    mail( :to => user[:email],
+          :cc => peer_emails,
+          :subject => "Pledge Action"
         )
   end
 end
