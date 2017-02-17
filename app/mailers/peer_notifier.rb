@@ -9,8 +9,14 @@ class PeerNotifier < ApplicationMailer
 
     peer_emails = user.peers.select{ |p| p[:kind] == 'email' }.map{ |p| p[:to] }
     @user = user
-    subject = user.name + " just pledged " + @user.hours_pledged.round.to_s \
-              + " a week towards political action."
+
+    if user.hours_pledged == 1
+      subject = user.name + " just pledged " + user.hours_pledged.round.to_s \
+              + " hour a week towards political action."
+    else
+      subject = user.name + " just pledged " + user.hours_pledged.round.to_s \
+              + " hours a week towards political action."
+    end
 
     mail( :to => user[:email],
           :cc => peer_emails,
