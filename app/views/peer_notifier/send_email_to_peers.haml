@@ -2,7 +2,7 @@
   Hey,
   %br
   %br
-  ="We're fired up that " + @user.name.split[0].capitalize + ", just"
+  ="We're fired up that " + @user.name.split[0].capitalize + " just"
   %a{:href => root_url + 'u/' + @user.url} pledged
   ="to spend " + @user.hours_pledged.round.to_s + " hours a week on effective political action."
   %br
