@@ -28,4 +28,8 @@ class User < ActiveRecord::Base
     referrals.map(&:hours_pledged).compact.reduce(:+) || 0
   end
 
+  def primary_cause
+   UserCause.where(:user_id => id, :primary => true).first.try(:cause)
+  end
+
 end

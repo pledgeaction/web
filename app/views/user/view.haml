@@ -1,38 +1,50 @@
-.jumbotron
-  %h1 Refer Your Friends!
-  %label Your referral link
-  %input.form-control{:type => 'text', :value => root_url(:ref_user => @user.url)}
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}/
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}/
+    / The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags
+    %meta{:content => "", :name => "description"}/
+    %meta{:content => "", :name => "author"}/
+    %link{:href => "../../favicon.ico", :rel => "icon"}/
+    %title The Pledge
+    %link{:href => "../../dist/css/bootstrap.min.css", :rel => "stylesheet"}/
+    / IE10 viewport hack for Surface/desktop Windows 8 bug
+    %link{:href => "../../assets/css/ie10-viewport-bug-workaround.css", :rel => "stylesheet"}/
+    / Custom styles for this template
+    /[if lt IE 9] <script src="../../assets/js/ie8-responsive-file-warning.js"></script>
+    %script{:src => "../../assets/js/ie-emulation-modes-warning.js"}
+    / HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
+    /[if lt IE 9]
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 
-.panel.panel-default
-  .panel-heading Pledge
-  .panel-body
-    Pledged Hours:
-    = @user.hours_pledged.to_i
-  .panel-body
-    Referrals:
-    = @user.referrals.count
-  .panel-body
-    Pledged Referral Hours
-    = @user.referred_pledge_hours
+%body
+  .container 
+    .header.clearfix
+      %h3.text-muted The Pledge
+    .jumbotron
+      .h1
+        =@user.name.to_s
+      .h3
+        = " has pledged " + @user.hours_pledged.round.to_s + " hours per week "
+        %br
+        to taking effective political action
+      .h4
+        %br
+        = "Top Cause: " + @user.primary_cause.name
+        %br
+        %br
+      %p
+        %a.btn.btn-lg.btn-success{:href => root_url(:ref_user => @user.url), :role => "button"} Make your Pledge
+        %br
 
-.panel.panel-default
-  .panel-heading Causes
-  - @user.causes.each do |cause|
-    .panel-body
-      = cause.name
+      -if @user.referred_pledge_hours == 0
+        .p
+          ="Be " + @user.name.to_s.split[0] +"'s" " first referral"
 
-.panel.panel-default
-  .panel-heading Actions
-  - @user.actions.each do |action|
-    .panel-body
-      = action.name
-
-.panel.panel-default
-  .panel-heading Skills
-  - @user.skills.each do |skill|
-    .panel-body
-      = skill.name
-
-#raw
-  Raw
-  = @user.to_json
+      -else
+        .p
+        = @user.name.to_s.split[0] + " has already mobilized " + @user.referred_pledge_hours + " get on this train! "
