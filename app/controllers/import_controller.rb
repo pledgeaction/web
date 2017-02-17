@@ -38,7 +38,7 @@ class ImportController < ApplicationController
         @user.hours_pledged = answer["number"]
       when "42432170"
         #Is it cool if we get some conversations started for you
-        @user.enable_start_conversations = answer["boolean"] 
+        @user.enable_start_conversations = answer["boolean"]
       when "42428811"
         #What's your name?
         @user.name = answer["text"]
@@ -132,6 +132,7 @@ class ImportController < ApplicationController
     end
 
     @user.save!
+    PeerNotifier.send_email_to_peers(@user)
 
     head :ok
   end

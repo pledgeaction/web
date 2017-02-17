@@ -1,5 +1,5 @@
 include SendGrid
 class ApplicationMailer < ActionMailer::Base
-  default from: "foo@bar.com"
+  default from: "danny@pledgeaction.org"
   layout 'mailer'
 end
