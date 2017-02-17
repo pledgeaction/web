@@ -132,7 +132,7 @@ class ImportController < ApplicationController
     end
 
     @user.save!
-    PeerNotifier.send_email_to_peers(@user)
+    PeerNotifier.send_email_to_peers(@user).deliver_now
 
     head :ok
   end
