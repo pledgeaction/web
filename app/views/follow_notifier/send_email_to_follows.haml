@@ -4,11 +4,12 @@
   %br
   ="We're fired up that " + @user.name.split[0].capitalize + " just"
   %a{:href => root_url + 'u/' + @user.url} pledged
-  ="to spend " + @user.hours_pledged.round.to_s + " hours a week on effective political action."
+  ="to spend " + @user.hours_pledged.round.to_s + " hours a week on political action."
   %br
   ="Top cause: " + @user.primary_cause.name + "."
   %br
-  Help
+  =@user.name.split[0].capitalize
+  wants your advice on how to us this time as effectively as possible. Help
   =@user.name.split[0].capitalize
   keep this pledge:
   %br
@@ -18,7 +19,7 @@
   %a{:href => root_url(:ref_user => @user.url)} Make your own pledge
   and get a meeting with
   =@user.name.split[0].capitalize
-  on the books. You'll be much more effective once you are organized and your commitment is clear.
+  on the books. There's probably more people our there looking to your for leaderships. You'll be much more effective once you are organized and your commitment is clear.
 .p
   2. Spread the Word: It doesn't make sense to spend hours thinking about politics unless you are going to take action.
   %a{:href => root_url + 'u/' + @user.url} Share pledges
