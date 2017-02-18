@@ -3,7 +3,7 @@ class WelcomeNotifier < ApplicationMailer
   def send_welcome_email(user)
     puts "send_welcome_email"
     if user.nil?
-        puts "nil user or user declined to start conversations"
+        puts "nil user"
         return
     end
 
