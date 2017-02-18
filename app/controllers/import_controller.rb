@@ -132,7 +132,16 @@ class ImportController < ApplicationController
     end
 
     @user.save!
-    PeerNotifier.send_email_to_peers(@user).deliver_now
+
+    WelcomeNotifier.send_welcome_email(@user).deliver_now
+
+    if @user.peers.length > 0 && @user[:enable_start_conversations]
+      PeerNotifier.send_email_to_peers(@user).deliver_now
+    end
+
+    if @user.follows.length > 0 && @user[:enable_start_conversations]
+      FollowNotifier.send_email_to_follows(@user).deliver_now
+    end
 
     head :ok
   end

@@ -1,19 +1,13 @@
 #id
-  Hey,
+  =@user.name.split[0].capitalize + ","
   %br
   %br
-  ="We're fired up that " + @user.name.split[0].capitalize + " just"
-  %a{:href => root_url + 'u/' + @user.url} pledged
-  ="to spend " + @user.hours_pledged.round.to_s + " hours a week on effective political action."
+  %a{:href => root_url + 'u/' + @user.url} Your pledge
+  is a huge step forward! Keep this momentum going. Get started on your hours for the week with the recommended actions below.
   %br
-  ="Top cause: " + @user.primary_cause.name + "."
   %br
-  Help
-  =@user.name.split[0].capitalize
-  keep this pledge:
-  %br
+
 .p
-  %br
   1.
   %a{:href => root_url(:ref_user => @user.url)} Make your own pledge
   and get a meeting with
@@ -36,9 +30,14 @@
   and
   %a{ href: "https://www.facebook.com/groups/1480612095295906/", title: "" } facebook
   group.
+  %br
+  %br
 
-.p
+-if @user.phone_number && @user.enable_text_checkins != false then
+  I'll check in soon,
   %br
-  Good Times,
+  Danny from The Pledge
+-else
+  More recommendations soon,
   %br
-  =@user.name + " and Danny from The Pledge"
+  Danny from The Pledge
