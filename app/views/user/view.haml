@@ -22,7 +22,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 
 %body
-  .container 
+  .container
     .header.clearfix
       %h3.text-muted The Pledge
     .jumbotron
@@ -47,4 +47,4 @@
 
       -else
         .p
-        = @user.name.to_s.split[0] + " has already mobilized " + @user.referred_pledge_hours + " get on this train! "
+        = @user.name.to_s.split[0] + " has already mobilized " + @user.referred_pledge_hours.to_s + " get on this train! "
