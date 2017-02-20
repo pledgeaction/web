@@ -24,15 +24,13 @@
 %body
   .container
     .header.clearfix
-      %h3.text-muted The Pledge
+      %h3 The Pledge
     .jumbotron
-      .h1
+      .h2
         =@user.name.to_s
-      .h3
-        = " has pledged " + @user.hours_pledged.round.to_s + " hours per week "
-        %br
-        to taking effective political action
       .h4
+        = " has pledged " + @user.hours_pledged.round.to_s + " hours per week to taking effective political action"
+      .h5
         %br
         = "Top Cause: " + @user.primary_cause.name
         %br
