@@ -6,5 +6,7 @@ class CreateCheckins < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+
+    add_index :checkins, :phone_number
   end
 end
