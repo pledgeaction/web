@@ -32,4 +32,16 @@ class User < ActiveRecord::Base
    UserCause.where(:user_id => id, :primary => true).first.try(:cause)
   end
 
+  def checkin_hours
+    Checkins.where(:phone_number => phone_number).map {|checkin| checkin.hours.to_i}.reduce(0, :+)
+  end
+
+  def new_checkin_prompt_sent
+    Checkins.create(:phone_number => phone_number)
+  end
+
+  def update_checkin(hours)
+    checkin = Checkins.where(:phone_number => phone_number).order(:created_at).last
+    checkin.update(hours: hours)
+  end
 end
