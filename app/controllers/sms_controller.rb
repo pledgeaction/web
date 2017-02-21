@@ -7,11 +7,29 @@ class SmsController < ApplicationController
     from_number = params["From"]
     puts from_number
     boot_twilio
-    text = @client.messages.create(
-      from: ENV["TWILIO_NUMBER"],
-      to: from_number,
-      body: "Hello there, thanks for texting me. Your number is #{from_number}."
-    )
+
+    if (1 .. 24 * 7).member?(message_body)
+      text = @client.messages.create(
+        from: ENV["TWILIO_NUMBER"],
+        to: from_number,
+        body: "Dope, keep up the good work!"
+      )
+    elsif message_body == "unsub"
+      @user = User.where("phone_number = ?", phone_number )[-1]
+      @user.enable_text_checkins = false
+      @user.save!
+      text = @client.messages.create(
+        from: ENV["TWILIO_NUMBER"],
+        to: from_number,
+        body: "Kk. You've been unsubscribed from these alerts."
+      )
+    else
+      text = @client.messages.create(
+        from: ENV["TWILIO_NUMBER"],
+        to: from_number,
+        body: "I didn't quite follow that. I only understand numbers ('1','2','3', etc) and 'unsub'"
+      )
+    end
 
   end
 
