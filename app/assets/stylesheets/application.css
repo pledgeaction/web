@@ -13,3 +13,27 @@
  *= require_tree .
  *= require_self
  */
+ /* Space out content a bit */
+
+ body {
+   padding-top: 20px;
+   padding-bottom: 20px;
+   overflow: visible;
+   background: #FFFFF;
+ }
+
+ .header h3 {
+   margin-top: 0;
+   margin-bottom: 0;
+   font-family:"futura-pt", futura, sans-serif;
+   font-size: 48px;
+   color: #174F66;
+ }
+
+ .btn-success {
+     background: #174F66;
+     border-color: #174F66;
+     color: #ffffff;
+     padding: 14px 24px;
+     font-size: 21px;
+ }
