@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resource :sms do
     collection do
-      post 'check_in'
+      post 'checkin'
     end
   end
 

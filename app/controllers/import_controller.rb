@@ -106,7 +106,31 @@ class ImportController < ApplicationController
         join.primary = true
         join.save
       when "42437130"
-        @user.phone_number = answer["text"]
+        #TODO verify this works on prod when pushed.
+        phone_number = answer["text"].gsub(/\D/, '')
+        if phone_number.length <= 10
+          phone_number = "+1" + phone_number
+        elsif phone_number[0] != "+"
+          phone_number = "+" + phone_number
+        end
+        @user.phone_number = phone_number
+
+# SCRIPT
+# User.where.not(:phone_number => nil).all.each do |user|
+#   puts user.phone_number
+#   phone_number = user.phone_number.gsub(/\D/, '')
+#   puts phone_number
+# # end
+#   if phone_number.length <= 10
+#     phone_number = "+1" + phone_number
+#   elsif phone_number[0] != "+"
+#     phone_number = "+" + phone_number
+#   end
+#   puts phone_number
+#   user.phone_number = phone_number
+#   user.save!
+# end
+
         @user.enable_text_checkins = true
       when "42437164"
         @user.zipcode = answer["text"]

@@ -2,35 +2,33 @@ class SmsController < ApplicationController
   skip_before_filter :verify_authenticity_token
    #skip_before_filter :authenticate_user!, :only => "reply"
 
-  def check_in
+  def checkin
     message_body = params["Body"]
     from_number = params["From"]
-    puts from_number
     boot_twilio
 
-    if (1 .. 24 * 7).member?(message_body)
-      text = @client.messages.create(
-        from: ENV["TWILIO_NUMBER"],
-        to: from_number,
-        body: "Dope, keep up the good work!"
-      )
-    elsif message_body == "unsub"
-      @user = User.where("phone_number = ?", phone_number )[-1]
-      @user.enable_text_checkins = false
-      @user.save!
-      text = @client.messages.create(
-        from: ENV["TWILIO_NUMBER"],
-        to: from_number,
-        body: "Kk. You've been unsubscribed from these alerts."
-      )
+    if message_body == "0"
+      #TODO look up their pledge amount, give them a friendly reminder of that.
+      render plain: "Happens, I recommend making a plan right now for the next couple weeks"
+      @checkin = Checkin.where(phone_number: from_number).last
+      @checkin.update(hours: 0)
+    elsif (1 .. 24 * 7).member?(message_body.to_i)
+      render plain: "Dope! Keep up the good work."
+      @checkin = Checkin.where(phone_number: from_number).last
+      @checkin.update(hours: message_body.to_i)
+    elsif message_body.downcase == "unsub"
+      #TODO maybe prompt them to reduce their pledge hours at this point.
+      @user = User.where(phone_number: from_number).where(enable_text_checkins: true).last
+      @user.update(enable_text_checkins: false)
+      render plain: 'Kk. You\'ve been unsubscribed from these check ins. Text "resub" if you\'d like to resubscribe'
+    elsif message_body.downcase == "resub"
+      @user = User.where(phone_number: from_number).where(enable_text_checkins: false).last
+      @user.update(enable_text_checkins: true)
+      render plain: 'And we\'re back! You\'ve been resubscribed to these check ins. Text "unsub" if you\'d like to unsubscribe'
     else
-      text = @client.messages.create(
-        from: ENV["TWILIO_NUMBER"],
-        to: from_number,
-        body: "I didn't quite follow that. I only understand numbers ('1','2','3', etc) and 'unsub'"
-      )
+      render plain: 'I didn\'t quite follow :/
+I only understand numbers like 0, 1, 2, 3, "unsub", and "resub"'
     end
-
   end
 
   private
@@ -39,6 +37,5 @@ class SmsController < ApplicationController
     sid = ENV["TWILIO_SID"]
     secret = ENV["TWILIO_SECRET"]
     @client = Twilio::REST::Client.new sid, secret
-    puts "twilio booted"
   end
 end
