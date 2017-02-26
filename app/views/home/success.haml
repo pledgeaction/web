@@ -22,6 +22,24 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 
 .body.pages.success
+  :javascript
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '413275755688992',
+        xfbml      : true,
+        version    : 'v2.8'
+      });
+      FB.AppEvents.logPageView();
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+
   .container
     .header.clearfix
       %h3 The Pledge
@@ -55,3 +73,5 @@
       %a{ href: "https://pledgeaction.slack.com/signup", title: "" } slack,
       and
       %a{ href: "https://www.facebook.com/groups/1480612095295906/", title: "" }  facebook group.
+    .button.facebook
+      Share!
