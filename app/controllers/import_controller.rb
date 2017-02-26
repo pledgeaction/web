@@ -19,6 +19,7 @@ class ImportController < ApplicationController
     #puts params
     #puts params.to_json
 
+    start_conversations = false
     params["form_response"]["answers"].each do |answer|
       case answer["field"]["id"]
       when "42429695" #What causes are you interested in?
@@ -36,9 +37,6 @@ class ImportController < ApplicationController
       when "42428682"
         #how many hours per week will you pledge towards taking effective political?
         @user.hours_pledged = answer["number"]
-      when "42432170"
-        #Is it cool if we get some conversations started for you
-        @user.enable_start_conversations = answer["boolean"]
       when "42428811"
         #What's your name?
         @user.name = answer["text"]
@@ -65,8 +63,10 @@ class ImportController < ApplicationController
         peers.gsub(/\s+/, ' ').split(" ").each do |peer| # split on all whitespace
           if EMAIL_REGEX.match(peer)
             Peer.create(:from_user_id => @user.id, :to => peer, :kind => 'email')
+            start_conversations = true
           elsif TWITTER_REGEX.match(peer)
             Peer.create(:from_user_id => @user.id, :to => peer, :kind => 'twitter')
+            start_conversations = true
           end
         end
       when "42437020"
@@ -78,8 +78,10 @@ class ImportController < ApplicationController
         follows.gsub(/\s+/, ' ').split(" ").each do |follow| # split on all whitespace
           if EMAIL_REGEX.match(follow)
             Follow.create(:from_user_id => @user.id, :to => follow, :kind => 'email')
+            start_conversations = true
           elsif TWITTER_REGEX.match(follow)
             Follow.create(:from_user_id => @user.id, :to => follow, :kind => 'twitter')
+            start_conversations = true
           end
         end
       when "42436932"
@@ -142,6 +144,7 @@ class ImportController < ApplicationController
       @user.referrer = User.find_by_url(params["form_response"]["hidden"]["ref_user"])
     end
 
+    @user.enable_start_conversations = start_conversations
     @user.save!
 
     WelcomeNotifier.send_welcome_email(@user).deliver_now
