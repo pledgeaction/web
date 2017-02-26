@@ -45,18 +45,19 @@ class ImportController < ApplicationController
       when "42428262"
         #How many hours did you spend last week on politics?
         hours = 0
-        case answer["text"]
-        when "a"
-          hours = 2
-        when "b"# 5-10
-          hours = 7
-        when "c" #10-20
-          hours = 15
-        when "d" #20-40
-          hours = 30
-        when "e" #40+
-          hours = 40
+        case answer["choice"]["label"]
+        when "0-5"
+            hours = 2
+        when "5-10"
+            hours = 7
+        when "10-20"
+            hours = 15
+        when "20-40"
+            hours = 30
+        when "40+"
+            hours = 40
         end
+
         @user.hours_spent_last_week = hours
       when "42430882"
         #Who else would you want to work closely with
@@ -116,7 +117,7 @@ class ImportController < ApplicationController
         @user.phone_number = phone_number
         @user.enable_text_checkins = true
       when "42437164"
-        @user.zipcode = answer["text"]
+        @user.zipcode = answer["number"]
       when "42480555"
         #What political actions have you taken in the last 12 months?
         action_names = [answer["choices"]["labels"], answer["choices"]["other"]].compact.flatten
@@ -130,6 +131,8 @@ class ImportController < ApplicationController
       when "42437044"
         #Your primary online resume
         @user.resume_link = answer["text"]
+      when "42819760"
+        @user.company = answer["text"]
       else
       end
     end
