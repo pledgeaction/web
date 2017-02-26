@@ -24,7 +24,7 @@
 %body
   .container
     .header.clearfix
-      %h3 The Pledge
+      = image_tag "pledge_logo_no_hand.png"
     .jumbotron
       .h2
         =@user.name.to_s
@@ -45,4 +45,4 @@
 
       -else
         .p
-        = @user.name.to_s.split[0] + " has already mobilized " + @user.referred_pledge_hours.to_s + " get on this train! "
+        = @user.name.to_s.split[0] + " has already raised pledges for " + @user.referred_pledge_hours.round.to_s + " hours/week! "
