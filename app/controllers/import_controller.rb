@@ -135,7 +135,11 @@ class ImportController < ApplicationController
         #Your primary online resume
         @user.resume_link = answer["url"]
       when "42819760"
+        #Where do you work?
         @user.company = answer["text"]
+      when "44196824"
+        #What political group do you most closely identify with?
+        @user.party_identification = answer["choice"]["label"]
       else
       end
     end
