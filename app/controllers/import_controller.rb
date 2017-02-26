@@ -73,7 +73,7 @@ class ImportController < ApplicationController
         #Your twitter handle
         @user.twitter_handle = answer["text"]
       when "42430824"
-        #Who would you take direction from on what actions are effective
+        #Enter the twitter handles and emails of people you'd want advice from and we'll reach out to them for you. (optional)
         follows = answer["text"]
         follows.gsub(/\s+/, ' ').split(" ").each do |follow| # split on all whitespace
           if EMAIL_REGEX.match(follow)
