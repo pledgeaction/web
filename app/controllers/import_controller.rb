@@ -117,6 +117,7 @@ class ImportController < ApplicationController
         @user.phone_number = phone_number
         @user.enable_text_checkins = true
       when "42437164"
+        #Your zipcode
         @user.zipcode = answer["number"]
       when "42480555"
         #What political actions have you taken in the last 12 months?
@@ -130,7 +131,7 @@ class ImportController < ApplicationController
         end
       when "42437044"
         #Your primary online resume
-        @user.resume_link = answer["text"]
+        @user.resume_link = answer["url"]
       when "42819760"
         @user.company = answer["text"]
       else
