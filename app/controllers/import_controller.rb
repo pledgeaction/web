@@ -19,6 +19,7 @@ class ImportController < ApplicationController
     #puts params
     #puts params.to_json
 
+    start_conversations = false
     params["form_response"]["answers"].each do |answer|
       case answer["field"]["id"]
       when "42429695" #What causes are you interested in?
@@ -36,27 +37,25 @@ class ImportController < ApplicationController
       when "42428682"
         #how many hours per week will you pledge towards taking effective political?
         @user.hours_pledged = answer["number"]
-      when "42432170"
-        #Is it cool if we get some conversations started for you
-        @user.enable_start_conversations = answer["boolean"]
       when "42428811"
         #What's your name?
         @user.name = answer["text"]
       when "42428262"
         #How many hours did you spend last week on politics?
         hours = 0
-        case answer["text"]
-        when "a"
-          hours = 2
-        when "b"# 5-10
-          hours = 7
-        when "c" #10-20
-          hours = 15
-        when "d" #20-40
-          hours = 30
-        when "e" #40+
-          hours = 40
+        case answer["choice"]["label"]
+        when "0-5"
+            hours = 2
+        when "5-10"
+            hours = 7
+        when "10-20"
+            hours = 15
+        when "20-40"
+            hours = 30
+        when "40+"
+            hours = 40
         end
+
         @user.hours_spent_last_week = hours
       when "42430882"
         #Who else would you want to work closely with
@@ -64,21 +63,25 @@ class ImportController < ApplicationController
         peers.gsub(/\s+/, ' ').split(" ").each do |peer| # split on all whitespace
           if EMAIL_REGEX.match(peer)
             Peer.create(:from_user_id => @user.id, :to => peer, :kind => 'email')
+            start_conversations = true
           elsif TWITTER_REGEX.match(peer)
             Peer.create(:from_user_id => @user.id, :to => peer, :kind => 'twitter')
+            start_conversations = true
           end
         end
       when "42437020"
         #Your twitter handle
         @user.twitter_handle = answer["text"]
       when "42430824"
-        #Who would you take direction from on what actions are effective
+        #Enter the twitter handles and emails of people you'd want advice from and we'll reach out to them for you. (optional)
         follows = answer["text"]
         follows.gsub(/\s+/, ' ').split(" ").each do |follow| # split on all whitespace
           if EMAIL_REGEX.match(follow)
             Follow.create(:from_user_id => @user.id, :to => follow, :kind => 'email')
+            start_conversations = true
           elsif TWITTER_REGEX.match(follow)
             Follow.create(:from_user_id => @user.id, :to => follow, :kind => 'twitter')
+            start_conversations = true
           end
         end
       when "42436932"
@@ -116,7 +119,8 @@ class ImportController < ApplicationController
         @user.phone_number = phone_number
         @user.enable_text_checkins = true
       when "42437164"
-        @user.zipcode = answer["text"]
+        #Your zipcode
+        @user.zipcode = answer["number"]
       when "42480555"
         #What political actions have you taken in the last 12 months?
         action_names = [answer["choices"]["labels"], answer["choices"]["other"]].compact.flatten
@@ -129,7 +133,13 @@ class ImportController < ApplicationController
         end
       when "42437044"
         #Your primary online resume
-        @user.resume_link = answer["text"]
+        @user.resume_link = answer["url"]
+      when "42819760"
+        #Where do you work?
+        @user.company = answer["text"]
+      when "44196824"
+        #What political group do you most closely identify with?
+        @user.party_identification = answer["choice"]["label"]
       else
       end
     end
@@ -138,6 +148,7 @@ class ImportController < ApplicationController
       @user.referrer = User.find_by_url(params["form_response"]["hidden"]["ref_user"])
     end
 
+    @user.enable_start_conversations = start_conversations
     @user.save!
 
     WelcomeNotifier.send_welcome_email(@user).deliver_now
