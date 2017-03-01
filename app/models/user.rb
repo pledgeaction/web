@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
 
   # get 8 random hex characters for an obfuscated user URL
   def url_hash
-    "#{id}#{Random.rand}".hash.abs.to_s(16)[0..7]
+    SecureRandom.hex[0..7]
   end
 
   before_create :save_url
