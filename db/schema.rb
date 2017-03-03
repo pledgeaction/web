@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170303210503) do
+ActiveRecord::Schema.define(version: 20170303213433) do
 
   create_table "actions", force: :cascade do |t|
     t.string   "name"
@@ -30,8 +30,9 @@ ActiveRecord::Schema.define(version: 20170303210503) do
   create_table "checkins", force: :cascade do |t|
     t.string   "phone_number"
     t.integer  "hours"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.string   "last_question"
   end
 
   add_index "checkins", ["phone_number"], name: "index_checkins_on_phone_number"
