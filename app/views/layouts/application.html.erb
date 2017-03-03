@@ -2,6 +2,11 @@
 <html>
 <head>
   <title>The Pledge</title>
+  <meta property="og:url"           content="http://www.pledgeaction.org" />
+  <meta property="og:type"          content="website" />
+  <meta property="og:title"         content="The Pledge" />
+  <meta property="og:description"   content="Our mission is to mobilize people to take effective political action." />
+  <meta property="og:image"         content="http://www.pledgeaction.org/pledge_logo_w_hand.png" /><body>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
@@ -13,12 +18,6 @@
   <meta name="theme-color" content="#ffffff"></head>
     <!-- You can use Open Graph tags to customize link previews.
     Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
-  <meta property="og:url"           content="http://www.pledgeaction.org" />
-  <meta property="og:type"          content="website" />
-  <meta property="og:title"         content="The Pledge" />
-  <meta property="og:description"   content="Our mission is to mobilize people to take effective political action." />
-  <meta property="og:image"         content="http://www.pledgeaction.org/pledge_logo_w_hand.png" /><body>
-
 <%= yield %>
 
 </body>
