@@ -83,12 +83,15 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
+    metaclass (0.0.4)
     mime-types (3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mimemagic (0.3.2)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
+    mocha (1.2.1)
+      metaclass (~> 0.0.1)
     multi_json (1.12.1)
     multipart-post (2.0.0)
     newrelic_rpm (3.18.1.330)
@@ -189,6 +192,7 @@ DEPENDENCIES
   haml-rails (>= 0.3.4)
   jbuilder (~> 2.0)
   jquery-rails
+  mocha
   newrelic_rpm
   pg
   rails (= 4.2.6)
@@ -204,4 +208,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.14.3
+   1.14.5
