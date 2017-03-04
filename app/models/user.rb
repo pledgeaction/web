@@ -36,4 +36,13 @@ class User < ActiveRecord::Base
     Checkin.where(:phone_number => phone_number).map {|checkin| checkin.hours.to_i}.reduce(0, :+)
   end
 
+  def pledge_material
+    relevant_skill_ids = [1,2,3,4,6,7,12,14]
+    relevant_overlap = relevant_skill_ids & skills.map(&:id)
+    if relevant_overlap.length > 0
+      true
+    else
+      false
+    end
+  end
 end
