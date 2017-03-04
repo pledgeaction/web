@@ -44,17 +44,14 @@
       = image_tag "pledge_logo_no_hand.png"
     = image_tag "success.gif"
     .h4
-      We're fired up! You are ready to go. Get started on your
-      =params[:hours]
-      -#TODO handle single hour
-      hours for this week.
+      We're fired up! You are ready to go. Get started on this week's hours.
     .p
       1. Assemble your squad: get everyone
-      %a.referral{ href: "http://pledgeaction.org", title: "" } pledged up
+      %a.referral{ href: "#{@share_url}", title: "" } pledged up
       and get a meeting on the books.
     .p
       2. Recruit Squads:
-      %a.referral{ href: "http://pledgeaction.org", title: "" } share the pledge
+      %a.referral{ href: "#{@share_url}", title: "" } share the pledge
       on Facebook, Twitter, etc. Finally, a post that will lead to effective action. Tag your most politically engaged friends, and tell everyone to do the same.
       (We'll keep track of hours you refer if you use the link we just e-mailed you)
     .p
@@ -72,3 +69,11 @@
       %a{ href: "https://www.facebook.com/groups/1480612095295906/", title: "" }  facebook group.
     .button.facebook
       Share!
+
+    %a.twitter-share-button.referral{:href => "https://twitter.com/share?text=I%20just%20pledged%20to%20take%20meaningful%20political%20action.%20Join%20me.%20&url=#{@share_url}", :"data-size" => "large", :"data-show-count" => "false"}
+      Share
+    %script{:src => "//platform.twitter.com/widgets.js", :charset => "utf-8"}
+
+    .fb-share-button.ref-data{:"data-href" => "#{@share_url}", :"data-layout" => "button", :" data-size" => "large", :"data-mobile-iframe" => "true"}
+    %a.fb-xfbml-parse-ignore.ref-data{:target => "_blank", :href => "https://www.facebook.com/sharer/sharer.php?u=#{@share_url}"}
+

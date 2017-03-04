@@ -7,13 +7,12 @@ class UserController < ApplicationController
     if @user.blank?
       ErrorNotifier.send_error_email.deliver
       render_404
-
     end
   end
 
   def view
-
   end
+
   def ref
     @user = User.where(["email = ?", params[:email]]).last
 
@@ -21,4 +20,5 @@ class UserController < ApplicationController
       render_404
     end
   end
+
 end
