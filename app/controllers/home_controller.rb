@@ -18,7 +18,7 @@ class HomeController < ApplicationController
       if try_count < 4
         sleep(0.2)
 
-        redirect_to '/success?email=' params[:email] + '&try=' + (try_count + 1).to_s
+        redirect_to '/success?email=' + params[:email] + '&try=' + (try_count + 1).to_s
         return
       else
         render_404
