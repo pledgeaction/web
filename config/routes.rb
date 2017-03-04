@@ -9,7 +9,6 @@ Rails.application.routes.draw do
   get '/success' => 'home#success'
 
   get 'u/:id' => 'user#view'
-  get '/ref' => 'user#ref'
 
   post 'import/typeform' => 'import#typeform'
 end
