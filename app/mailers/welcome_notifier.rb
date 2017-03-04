@@ -1,10 +1,15 @@
 include SendGrid
 class WelcomeNotifier < ApplicationMailer
   def send_welcome_email(user)
-    puts "send_welcome_email"
+    logger.info "send_welcome_email"
     if user.nil?
-        puts "nil user"
-        return
+      logger.warn "nil user"
+      return
+    end
+
+    if user.hours_pledged.nil?
+      logger.warn "No hours for user: #{user.id}"
+      return
     end
 
     @user = user

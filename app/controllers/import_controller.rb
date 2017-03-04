@@ -31,7 +31,7 @@ class ImportController < ApplicationController
   end
 
   EMAIL_REGEX = /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
-  TWITTER_REGEX = /(?<=^|(?<=[^a-zA-Z0-9-_\.]))@([A-Za-z]+[A-Za-z0-9]+)/
+  TWITTER_REGEX = /(?<=^|(?<=[^a-zA-Z0-9\-_\.]))@([A-Za-z]+[A-Za-z0-9]+)/
 
   skip_before_action :verify_authenticity_token
   def typeform
@@ -41,11 +41,9 @@ class ImportController < ApplicationController
       return
     end
 
-    #TODO: params are not saving
     @user = User.new
     @user.signup_blob = params.to_json
     @user.save!
-
 
     start_conversations = false
     params["form_response"]["answers"].each do |answer|
@@ -82,7 +80,7 @@ class ImportController < ApplicationController
         @user.hours_spent_last_week = hours
       when TypeFormQuestion.friends_emails
         peers = answer["text"]
-        peers.gsub(/\s+/, ' ').split(" ").each do |peer| # split on all whitespace
+        peers.split(/\s+/).each do |peer| # split on all whitespace
           if EMAIL_REGEX.match(peer)
             Peer.create(:from_user_id => @user.id, :to => peer, :kind => 'email')
             start_conversations = true
@@ -115,7 +113,7 @@ class ImportController < ApplicationController
         end
       when TypeFormQuestion.what_cause_would_you_be_the_most_excited_to_work_on
         cause_name = answer["choice"]["label"]
-        if !@user.causes.find_by_name(cause_name)
+        unless @user.causes.find_by_name(cause_name)
           cause = Cause.find_by_name(cause_name)
           if cause.blank?
             cause = Cause.create(:name => cause_name)
@@ -127,7 +125,6 @@ class ImportController < ApplicationController
         join.primary = true
         join.save
       when TypeFormQuestion.your_phone_number
-        #TODO verify this works on prod when pushed.
         phone_number = answer["text"].gsub(/\D/, '')
         if phone_number.length <= 10
           phone_number = "+1" + phone_number
@@ -152,10 +149,9 @@ class ImportController < ApplicationController
       when TypeFormQuestion.where_do_you_work
         @user.company = answer["text"]
       when TypeFormQuestion.what_political_group_do_you_most_identify_with
-        #What political group do you most closely identify with?
         @user.party_identification = answer["choice"]["label"]
       else
-        log "Unexpected TypeForm question ID: #{answer}"
+        logger.warn "Unexpected TypeForm question ID: #{answer}"
       end
     end
 
