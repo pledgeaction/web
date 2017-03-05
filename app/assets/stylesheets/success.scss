@@ -11,6 +11,7 @@ html, body {
 	margin: 0 auto;
 }
 a {
+    text-decoration: underline;
 	color: inherit;
 	transition: all 0.2s;
 	&:hover {
