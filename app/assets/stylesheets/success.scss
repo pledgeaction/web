@@ -1,0 +1,109 @@
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900);
+
+html, body {
+    font-family: Roboto, Helvetica Neue, Helvetica, sans-serif;
+	color: #575d65;
+	font-weight: 300;
+}
+.wrapper {
+	max-width: 600px;
+	margin: 0 auto;
+}
+a {
+	color: inherit;
+	transition: all 0.2s;
+	&:hover {
+		color: #999;
+	}
+}
+.logo {
+	margin: 24px 0 96px;
+}
+.intro {
+	margin-bottom: 100px;
+	text-align: center;
+	h1 {
+		font-size: 48px;
+		font-weight: 400;
+	}
+}
+.share-button {
+	display: inline-block;
+	width: 160px;
+	margin: 0 4px;
+	border-radius: 4px;
+	padding: 12px;
+	font-size: 14px;
+	font-weight: 400;
+	color: white;
+	transition: all 0.2s;
+	&:hover {
+		cursor: pointer;
+		opacity: 0.95;
+	}
+	.fa {
+		padding-right: 8px;
+	}
+	&.fb {
+		background: #465795;
+	}
+	&.twitter {
+		background: #0693e3;
+	}
+}
+.step {
+	overflow: auto;
+	margin: 48px 0;
+}
+.step__number {
+	float: left;
+	color: #e5e6e8;
+	font-size: 48px;
+	font-weight: 400;
+	margin-right: 32px;
+}
+.step__content {
+	float: left;
+}
+.step__headline {
+	font-size: 22px;
+	font-weight: 500;
+	margin-bottom: 16px;
+}
+.step__detail {
+}
+.share h2 {
+	width: 400px;
+	margin: 0 auto 24px;
+	text-align: center;
+	font-size: 20px;
+	font-weight: 300;
+	line-height: 1.5em;
+}
+.steps h2 {
+	margin-bottom: 60px;
+	text-align: center;
+	font-weight: 400;
+	opacity: 0.75;
+}
+
+
+
+// confetti css
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  height: 100%;
+  width: 100%;
+}
+
+#confetti{
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  pointer-events:none;
+}
