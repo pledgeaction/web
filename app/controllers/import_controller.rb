@@ -42,7 +42,7 @@ class ImportController < ApplicationController
     end
 
     @user = User.new
-    @user.signup_blob = params.to_json
+    @user.signup_blob = params
     @user.save!
 
     start_conversations = false
