@@ -37,6 +37,7 @@ class User < ActiveRecord::Base
   end
 
   def pledge_material
+    #TODO at least 4 hours pledged
     relevant_skill_ids = [1,2,3,4,6,7,12,14]
     relevant_overlap = relevant_skill_ids & skills.map(&:id)
     if relevant_overlap.length > 0
