@@ -10,13 +10,16 @@ def checkin_user(user)
   Checkin.create(:phone_number => user.phone_number)
   phone_number = user.phone_number
 
-  if user.hours_pledged > 1
-    half = user.hours_pledged / 2
-    double = user.hours_pledged * 2
-    text = @client.messages.create(
-      from: ENV["TWILIO_NUMBER"],
-      to: user.phone_number,
-      body: "Hey there!
+
+  begin
+
+    if user.hours_pledged > 1
+      half = user.hours_pledged / 2
+      double = user.hours_pledged * 2
+      text = @client.messages.create(
+        from: ENV["TWILIO_NUMBER"],
+        to: user.phone_number,
+        body: "Hey there!
 
 This is Danny checking in on your pledge (#{user.hours_pledged.round.to_s} hours per week).
 How many hours did you spend on political action last week?
@@ -26,12 +29,12 @@ number 0, #{half.round.to_s}, #{user.hours_pledged.round.to_s}, #{double.round.t
 HOW to get help making a high impact plan for the week
 UNSUB to unsubscribe
 "
-    )
-  else
-    text = @client.messages.create(
-      from: ENV["TWILIO_NUMBER"],
-      to: user.phone_number,
-      body: "Hey there!
+      )
+    else
+      text = @client.messages.create(
+        from: ENV["TWILIO_NUMBER"],
+        to: user.phone_number,
+        body: "Hey there!
 
 This is Danny checking in on your pledge (#{user.hours_pledged.round.to_s} hour per week).
 How many hours did you spend on political action last week?
@@ -41,18 +44,40 @@ number 0, 1, 2, 3 etc
 HOW to get help making a high impact plan for the week
 UNSUB to unsubscribe
 "
-    )
+      )
+    end
+  rescue Exception => e
+    if e.code == 21211
+      puts "failed text message, probably an invalid number"
+    else
+      raise e
+    end
   end
 end
 
 # Test user
+# checkin_user(User.find(id=504)) invalid number
 # checkin_user(User.find(id=515))
 
 User.where.not(:phone_number => nil).where.not(:enable_text_checkins => false).find_each do |user|
+  puts ""
   puts user.name
   puts user.phone_number
-  @checkin = Checkin.where(phone_number: user.phone_number).last
-  puts @checkin.hours
-  puts @checkin.last_question
+
+# in case job failed half way through
+  # if ["+13166193650", "+18472198157", "+14846865329", "+18083521086"].include? user.phone_number
+  #   puts "skipping"
+  #   next
+  # end x
+  puts "texting"
+
+  #UNCOMMENT TO ACTUALLY RUN
   # checkin_user(user)
+
+  @checkin = Checkin.where(phone_number: user.phone_number).last
+  if @checkin
+    puts @checkin.created_at
+    puts @checkin.hours
+    puts @checkin.last_question
+  end
 end
