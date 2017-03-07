@@ -217,7 +217,10 @@ class ImportControllerTest < ActionController::TestCase
     }
     post :typeform, params_to_submit
     user = User.last
-    parsed_blob = JSON.parse(user.signup_blob, symbolize_names: true)
-    assert parsed_blob[:form_response][:answers].first[:field][:text] == 'foo'
+    parsed_response = JSON.parse(
+      user.signup_blob['form_response'].gsub('=>', ':'),
+      symbolize_names: true
+    )
+    assert parsed_response[:answers].first[:field][:text] == 'foo'
   end
 end
