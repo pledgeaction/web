@@ -81,6 +81,7 @@ I'm so glad I could help you form a plan :D"
         @checkin.update(last_question: "have_organization")
         render plain: "Ok lone wolf. Scratch the buddy system for now. Have you found an organization to help? (or started your own)"
       when "have_organization"
+        @user.update(has_organization: false)
         if @user.pledge_material == true
           @checkin.update(last_question: "help_pledge_directly")
           render plain: "It looks like you've got some skillz. How about helping The Pledge directly?"
