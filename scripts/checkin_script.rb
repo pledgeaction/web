@@ -5,20 +5,45 @@ secret = ENV["TWILIO_SECRET"]
 @client = Twilio::REST::Client.new sid, secret
 
 def checkin_user(user)
+  #TODO remind people of people and organizations they thought they would want to work with.
   puts user.name
   puts user.phone_number
-  Checkin.create(:phone_number => user.phone_number)
+  @checkin = Checkin.create(:phone_number => user.phone_number)
+
+  if @checkin
+    puts @checkin.created_at
+  end
+
   phone_number = user.phone_number
 
   begin
-    if @user.has_working_group == nil or @user.has_working_group == false
+    if user.has_working_group == nil || user.has_working_group == false
       @checkin.update(last_question: "have_working_group")
+      text = @client.messages.create(
+        from: ENV["TWILIO_NUMBER"],
+        to: user.phone_number,
+        body: "Danny here, checking in on your Pledge 🇺🇸
 
-  "We strongly believe in the buddy system. Have you got at least one friend committed to work with you?"
+We're big on the buddy system. Have you got at least one person committed to work with you?
 
-    elsif @user.has_organization == nil or @user.has_organization == false
+YES / NO
+UNSUB to unsubscribe
+"
+)
+
+    elsif user.has_organization == nil || user.has_organization == false
       @checkin.update(last_question: "have_organization")
-    "Have you found an organization to help? (or started your own)"
+      text = @client.messages.create(
+        from: ENV["TWILIO_NUMBER"],
+        to: user.phone_number,
+        body: "Danny here, checking in on your Pledge 🇺🇸
+
+Have you found an organization to help? (or started your own)
+
+YES / NO
+UNSUB to unsubscribe
+"
+)
 
     else
       if user.hours_pledged > 1
@@ -34,6 +59,7 @@ How many hours did you spend on political action last week?
 
 REPLY with a
 number 0, #{half.round.to_s}, #{user.hours_pledged.round.to_s}, #{double.round.to_s}, etc
+
 UNSUB to unsubscribe
 "
         )

@@ -3,8 +3,6 @@ class SmsController < ApplicationController
    #skip_before_filter :authenticate_user!, :only => "reply"
 
   def checkin
-    #TODO write answer of have_organization to database.
-    #TODO remind people of people and organizations they thought they would want to work with.
     message_body = params["Body"]
     from_number = params["From"]
     boot_twilio
@@ -44,15 +42,6 @@ Have you found an organization to help? (or started your own)"
       @user.update(enable_text_checkins: true)
       render plain: 'And we\'re back! You\'ve been resubscribed to these check ins. Text "unsub" if you\'d like to unsubscribe'
 
-    when "how"
-      if @user.has_working_group == nil or @user.has_working_group == false
-        @checkin.update(last_question: "have_working_group")
-        render plain: "Have you got at least one friend committed to work with you?"
-      else
-        @checkin.update(last_question: "have_organization")
-        render plain: "Have you found an organization to help? (or started your own)"
-      end
-
     when "yes"
       case @checkin.last_question
       when "have_working_group"
@@ -66,7 +55,8 @@ Have you found an organization to volunteer/work for? (or started your own)"
       when "get_working_group_this_month"
         render plain: "Then focus on that for sure. That'd be huge"
       when "have_organization"
-        render plain: "That's dope. Your squad is way ahead of the curve."
+        @user.update(has_organization: true)
+        render plain: "That's dope. Your squad is way ahead of the curve. I'll start helping you keep track of the hours you are putting in next week"
       when "help_pledge_directly"
         render plain: "Amazing!
 
@@ -91,6 +81,7 @@ I'm so glad I could help you form a plan :D"
         @checkin.update(last_question: "have_organization")
         render plain: "Ok lone wolf. Scratch the buddy system for now. Have you found an organization to help? (or started your own)"
       when "have_organization"
+        @user.update(has_organization: false)
         if @user.pledge_material == true
           @checkin.update(last_question: "help_pledge_directly")
           render plain: "It looks like you've got some skillz. How about helping The Pledge directly?"
