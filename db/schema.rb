@@ -13,6 +13,10 @@
 
 ActiveRecord::Schema.define(version: 20170313000042) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+  enable_extension "hstore"
+
   create_table "actions", force: :cascade do |t|
     t.string   "name"
     t.string   "description"
@@ -35,7 +39,7 @@ ActiveRecord::Schema.define(version: 20170313000042) do
     t.string   "last_question"
   end
 
-  add_index "checkins", ["phone_number"], name: "index_checkins_on_phone_number"
+  add_index "checkins", ["phone_number"], name: "index_checkins_on_phone_number", using: :btree
 
   create_table "follows", force: :cascade do |t|
     t.integer  "from_user_id"
@@ -82,7 +86,26 @@ ActiveRecord::Schema.define(version: 20170313000042) do
     t.datetime "updated_at", null: false
   end
 
-# Could not dump table "users" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  create_table "users", force: :cascade do |t|
+    t.string   "email"
+    t.string   "name"
+    t.float    "hours_pledged"
+    t.string   "phone_number"
+    t.string   "zipcode"
+    t.string   "twitter_handle"
+    t.boolean  "enable_text_checkins"
+    t.boolean  "enable_start_conversations"
+    t.string   "resume_link"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.hstore   "signup_blob"
+    t.integer  "hours_spent_last_week"
+    t.integer  "referring_user_id"
+    t.string   "url"
+    t.string   "company"
+    t.string   "party_identification"
+    t.boolean  "has_working_group"
+    t.boolean  "has_organization"
+  end
 
 end
