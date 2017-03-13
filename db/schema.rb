@@ -11,11 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170303213433) do
-
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-  enable_extension "hstore"
+ActiveRecord::Schema.define(version: 20170313000042) do
 
   create_table "actions", force: :cascade do |t|
     t.string   "name"
@@ -39,7 +35,7 @@ ActiveRecord::Schema.define(version: 20170303213433) do
     t.string   "last_question"
   end
 
-  add_index "checkins", ["phone_number"], name: "index_checkins_on_phone_number", using: :btree
+  add_index "checkins", ["phone_number"], name: "index_checkins_on_phone_number"
 
   create_table "follows", force: :cascade do |t|
     t.integer  "from_user_id"
@@ -86,24 +82,7 @@ ActiveRecord::Schema.define(version: 20170303213433) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string   "email"
-    t.string   "name"
-    t.float    "hours_pledged"
-    t.string   "phone_number"
-    t.string   "zipcode"
-    t.string   "twitter_handle"
-    t.boolean  "enable_text_checkins"
-    t.boolean  "enable_start_conversations"
-    t.string   "resume_link"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.hstore   "signup_blob"
-    t.integer  "hours_spent_last_week"
-    t.integer  "referring_user_id"
-    t.string   "url"
-    t.string   "company"
-    t.string   "party_identification"
-  end
+# Could not dump table "users" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
 
 end
