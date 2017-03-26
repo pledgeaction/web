@@ -6,13 +6,10 @@ secret = ENV["TWILIO_SECRET"]
 
 def checkin_user(user)
   #TODO remind people of people and organizations they thought they would want to work with.
+  puts ""
   puts user.name
   puts user.phone_number
   @checkin = Checkin.create(:phone_number => user.phone_number)
-
-  if @checkin
-    puts @checkin.created_at
-  end
 
   phone_number = user.phone_number
 
@@ -79,6 +76,13 @@ UNSUB to unsubscribe
         )
       end
     end
+
+    if @checkin
+      puts @checkin.created_at
+      puts @checkin.hours
+      puts @checkin.last_question
+    end
+
   rescue Exception => e
     if e.code == 21211
       puts "failed text message, probably an invalid number"
@@ -90,27 +94,20 @@ end
 
 # Test user
 # checkin_user(User.find(id=504)) invalid number
-checkin_user(User.find(id=515))
+# checkin_user(User.find(id=515))
 
-# User.where.not(:phone_number => nil).where.not(:enable_text_checkins => false).find_each do |user|
-#   puts ""
-#   puts user.name
-#   puts user.phone_number
-#
-# # in case job failed half way through
-#   # if ["+13166193650", "+18472198157", "+14846865329", "+18083521086"].include? user.phone_number
-#   #   puts "skipping"
-#   #   next
-#   # end x
-#   puts "texting"
-#
-#   #UNCOMMENT TO ACTUALLY RUN
-#   # checkin_user(user)
-#
-#   @checkin = Checkin.where(phone_number: user.phone_number).last
-#   if @checkin
-#     puts @checkin.created_at
-#     puts @checkin.hours
-#     puts @checkin.last_question
-#   end
-# end
+User.where.not(:phone_number => nil).where.not(:enable_text_checkins => false).find_each do |user|
+  # puts ""
+  puts user.name
+  puts user.phone_number
+
+# in case job failed half way through
+  # if ["+13166193650", "+18472198157", "+14846865329", "+18083521086"].include? user.phone_number
+  #   puts "skipping"
+  #   next
+  # end x
+
+  #UNCOMMENT TO ACTUALLY RUN
+  checkin_user(user)
+
+end
