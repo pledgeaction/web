@@ -404,8 +404,50 @@
         });
 
     </script>
+
+    <script>
+        // TODO: move out inline js
+        $(document).ready(function(){
+          $('.js-share-fb').click(function() {
+            FB.ui({
+              method: 'share',
+              display: 'popup',
+              href: '<%= @share_url %>'
+            }, function(response){});
+          });
+
+          $('.js-share-twitter').click(function() {
+            var url = "https://twitter.com/share?text=I%20just%20pledged%20to%20take%20meaningful%20political%20action.%20Join%20me.%20&url=<%= @share_url %>";
+            window.open(url, "", "width=500,height=400,resizable=true").focus();
+          });
+        });
+    </script>
+    <style>
+        .share-buttons > a {
+            text-decoration: none;
+        }
+    </style>
   </head>
 <body>
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : '413275755688992',
+        xfbml      : true,
+        version    : 'v2.8'
+      });
+      FB.AppEvents.logPageView();
+    };
+
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "//connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+  </script>
+
   <canvas height='1' id='confetti' width='1'> </canvas>
 
   <div class="wrapper">
@@ -416,19 +458,20 @@
 
       <h1>You rock, <span id="first-name">Danny</span>!</h1>
 
-      <section class="share">
-        <h2>Share the hours you've committed &amp; tag your most politically engaged friends</h2>
+      <section class="share"> <h2>Share the hours you've committed &amp; tag your most politically engaged friends</h2>
 
         <div class="share-buttons">
-          <div class="share-button fb">
+
+          <a class="share-button fb js-share-fb">
             <i class="fa fa-facebook-official" aria-hidden="true"></i>
             Share it
-          </div>
+          </a>
 
-          <div class="share-button twitter">
+          <a class="share-button twitter js-share-twitter">
             <i class="fa fa-twitter" aria-hidden="true"></i>
             Tweet it
-          </div>
+          </a>
+
         </div>
       </section>
     </div>
