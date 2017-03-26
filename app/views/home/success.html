@@ -406,23 +406,27 @@
     </script>
 
     <script>
+        // TODO: move out inline js
+        $(document).ready(function(){
+          $('.js-share-fb').click(function() {
+            FB.ui({
+              method: 'share',
+              display: 'popup',
+              href: '<%= @share_url %>'
+            }, function(response){});
+          });
 
-    $(document).ready(function(){
-      $('.js-share-fb').click(function() {
-        FB.ui({
-          method: 'share',
-          display: 'popup',
-          href: '<%= @share_url %>'
-        }, function(response){});
-      });
-
-      $('.js-share-twitter').click(function() {
-        var url = "https://twitter.com/share?text=I%20just%20pledged%20to%20take%20meaningful%20political%20action.%20Join%20me.%20&url=<%= @share_url %>";
-        window.open(url, "", "width=500,height=400,resizable=true").focus();
-      });
-    });
-
+          $('.js-share-twitter').click(function() {
+            var url = "https://twitter.com/share?text=I%20just%20pledged%20to%20take%20meaningful%20political%20action.%20Join%20me.%20&url=<%= @share_url %>";
+            window.open(url, "", "width=500,height=400,resizable=true").focus();
+          });
+        });
     </script>
+    <style>
+        .share-buttons > a {
+            text-decoration: none;
+        }
+    </style>
   </head>
 <body>
   <script>
@@ -458,12 +462,12 @@
 
         <div class="share-buttons">
 
-          <a class="share-button fb js-share-fb" style="text-decoration: none;">
+          <a class="share-button fb js-share-fb">
             <i class="fa fa-facebook-official" aria-hidden="true"></i>
             Share it
           </a>
 
-          <a class="share-button twitter js-share-twitter" style="text-decoration: none;">
+          <a class="share-button twitter js-share-twitter">
             <i class="fa fa-twitter" aria-hidden="true"></i>
             Tweet it
           </a>
