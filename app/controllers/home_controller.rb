@@ -26,6 +26,12 @@ class HomeController < ApplicationController
       end
     end
 
+    # refetch user to get user's first name
+    user = User.where(:url => params[:ref_user]).last
+    @user_name = user.try(:name)
+    if @user_name
+        @user_name = @user_name.split(" ")[0]
+    end
     @share_url = request.base_url + '/u/' + params[:ref_user]
   end
 
