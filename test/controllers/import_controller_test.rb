@@ -2,15 +2,25 @@ require 'test_helper'
 
 class ImportControllerTest < ActionController::TestCase
   test "should 400 if the submitted params aren't as expected" do
-    response = post :typeform, { not_form_response: 'value' }
+    response = post :typeform, params: { not_form_response: 'value' }
     assert response.code == '400'
 
-    response = post :typeform, { form_response: { not_answers: 'value' } }
+    response = post :typeform, params: { form_response: { not_answers: 'value' } }
     assert response.code == '400'
   end
 
   test "should 200 and create a user if params are as expected" do
-    response = post :typeform, { form_response: { answers: [] } }
+    params_to_submit = {
+      form_response: {
+        answers: [
+          {
+            field: { id: ImportController::TypeFormQuestion.your_email },
+            email: 'user_email',
+          },
+        ]
+      }
+    }
+    response = post :typeform, params: params_to_submit
     assert response.code == '200'
     assert User.count == 1
   end
@@ -26,7 +36,7 @@ class ImportControllerTest < ActionController::TestCase
         ]
       }
     }
-    post :typeform, params_to_submit
+    post :typeform, params: params_to_submit
     assert Cause.count == 3
   end
 
@@ -67,7 +77,7 @@ class ImportControllerTest < ActionController::TestCase
     }
     welcome_mail_stub = stub(deliver_now: true)
     WelcomeNotifier.expects(:send_welcome_email).returns(welcome_mail_stub)
-    post :typeform, params_to_submit
+    post :typeform, params: params_to_submit
     user = User.last
     assert user.email == 'user_email'
     assert user.hours_pledged == 2.5
@@ -89,7 +99,7 @@ class ImportControllerTest < ActionController::TestCase
         ],
       },
     }
-    post :typeform, params_to_submit
+    post :typeform, params: params_to_submit
     user = User.last
     assert user.hours_spent_last_week == 30
   end
@@ -107,7 +117,7 @@ class ImportControllerTest < ActionController::TestCase
     }
     peer_notifier_stub = stub(deliver_now: true)
     PeerNotifier.expects(:send_email_to_peers).returns(peer_notifier_stub)
-    post :typeform, params_to_submit
+    post :typeform, params: params_to_submit
     assert Peer.count == 3
     assert Set.new(Peer.all.map(&:to)) == Set.new(%w( t@f.com @abc d@m.com ))
   end
@@ -123,7 +133,7 @@ class ImportControllerTest < ActionController::TestCase
         ],
       },
     }
-    post :typeform, params_to_submit
+    post :typeform, params: params_to_submit
     user = User.last
     assert user.skills.count == 3
     assert Set.new(Skill.all.map(&:name)) == Set.new(%w( foo bar baz ))
@@ -140,7 +150,7 @@ class ImportControllerTest < ActionController::TestCase
         ],
       },
     }
-    post :typeform, params_to_submit
+    post :typeform, params: params_to_submit
     cause = Cause.last
     user_cause = UserCause.last
     assert cause.name == 'qux'
@@ -162,7 +172,7 @@ class ImportControllerTest < ActionController::TestCase
           ],
         },
       }
-      post :typeform, params_to_submit
+      post :typeform, params: params_to_submit
       user = User.last
       assert user.phone_number == normalized_phone_number
       assert user.enable_text_checkins
@@ -180,7 +190,7 @@ class ImportControllerTest < ActionController::TestCase
         ],
       },
     }
-    post :typeform, params_to_submit
+    post :typeform, params: params_to_submit
     user = User.last
     assert user.actions.count == 3
     assert Set.new(Action.all.map(&:name)) == Set.new(%w( foo bar baz ))
@@ -197,7 +207,7 @@ class ImportControllerTest < ActionController::TestCase
         ],
       },
     }
-    post :typeform, params_to_submit
+    post :typeform, params: params_to_submit
     user = User.last
     assert user.party_identification == 'quux'
   end
@@ -206,7 +216,7 @@ class ImportControllerTest < ActionController::TestCase
     params_to_submit = {
       form_response: { answers: [ { field: { id: 'unknown_id' } } ] }
     }
-    post :typeform, params_to_submit
+    post :typeform, params: params_to_submit
     assert response.code == '200'
     assert User.count == 1
   end
@@ -215,7 +225,7 @@ class ImportControllerTest < ActionController::TestCase
     params_to_submit = {
       form_response: { answers: [ { field: { id: 'id', text: 'foo' } } ] }
     }
-    post :typeform, params_to_submit
+    post :typeform, params: params_to_submit
     user = User.last
     parsed_response = JSON.parse(
       user.signup_blob['form_response'].gsub('=>', ':'),

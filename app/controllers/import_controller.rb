@@ -35,7 +35,6 @@ class ImportController < ApplicationController
 
   skip_before_action :verify_authenticity_token
   def typeform
-
     if !params["form_response"] || !params["form_response"]["answers"]
       head :bad_request
       return
