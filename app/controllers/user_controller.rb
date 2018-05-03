@@ -1,5 +1,6 @@
 class UserController < ApplicationController
-  before_filter :require_user, :only => :view
+  before_action :require_user, :only => :view
+
   def require_user
     puts "require user called"
     @user = User.find_by_url(params[:id])
