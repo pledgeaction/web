@@ -1,4 +1,4 @@
-class CreateUserCauses < ActiveRecord::Migration
+class CreateUserCauses < ActiveRecord::Migration[4.2]
   def change
     create_table :user_causes do |t|
       t.integer :cause_id
