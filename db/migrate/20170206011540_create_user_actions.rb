@@ -1,4 +1,4 @@
-class CreateUserActions < ActiveRecord::Migration
+class CreateUserActions < ActiveRecord::Migration[4.2]
   def change
     create_table :user_actions do |t|
       t.integer :action_id
