@@ -4,9 +4,13 @@ jobs:
     environment:
       ENV: dev
       BUNDLE_APP_CONFIG: ~/project/.bundle
+      DATABASE_URL: postgres://root@0.0.0.0:5432/circle-test_test
     docker:
       - image: circleci/ruby:2.5.3-node
       - image: circleci/postgres
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: circle-test_test
     steps:
       - checkout
       - restore_cache:
