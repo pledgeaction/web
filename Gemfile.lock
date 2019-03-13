@@ -215,25 +215,28 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  byebug
-  coffee-rails
-  haml-rails
-  jbuilder
-  jquery-rails
-  mocha
-  newrelic_rpm
-  pg
-  rails
-  rails_12factor
-  sass-rails
-  sdoc
-  sendgrid-actionmailer
-  spring
-  sqlite3
-  turbolinks
-  twilio-ruby
-  uglifier
-  web-console
+  byebug!
+  coffee-rails!
+  haml-rails!
+  jbuilder!
+  jquery-rails!
+  mocha!
+  newrelic_rpm!
+  pg!
+  rails!
+  rails_12factor!
+  sass-rails!
+  sdoc!
+  sendgrid-actionmailer!
+  spring!
+  sqlite3!
+  turbolinks!
+  twilio-ruby!
+  uglifier!
+  web-console!
+
+RUBY VERSION
+   ruby 2.5.3p105
 
 BUNDLED WITH
    1.16.6
