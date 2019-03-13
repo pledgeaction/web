@@ -5,7 +5,7 @@ jobs:
       ENV: dev
       BUNDLE_APP_CONFIG: ~/project/.bundle
     docker:
-      - image: circleci/ruby:2.5.3
+      - image: circleci/ruby:2.5.3-node
     steps:
       - checkout
       - restore_cache:
