@@ -6,6 +6,7 @@ jobs:
       BUNDLE_APP_CONFIG: ~/project/.bundle
     docker:
       - image: circleci/ruby:2.5.3-node
+      - image: circleci/postgres
     steps:
       - checkout
       - restore_cache:
